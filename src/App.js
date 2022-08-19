@@ -12,6 +12,7 @@ import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
 import Footer from './components/Footer';
 import About from './components/About';
+const url = 'https://dummytasktrackerserver.herokuapp.com/tasks';
 
 // --- APP MAIN ---
 const App = () => {
@@ -29,17 +30,18 @@ const App = () => {
     
     // Fetch ALL Tasks from dummy server
     const fetchTasks = async () => {
-        const res = await fetch('http://localhost:5000/tasks');
+        const res = await fetch(url);
         const data = await res.json();
+        console.log(data);
         
         return data;
     }
     
     // Fetch Task by ID
     const fetchTask = async (id) => {
-        const res = await fetch(`http://localhost:5000/tasks/${id}`);
+        const res = await fetch(`${url}/${id}`);
         const data = await res.json();
-        
+            
         return data;
     }
     
@@ -50,7 +52,7 @@ const App = () => {
         const newTask = {id, ...task};
         setTask([...tasks, newTask]);
         */
-        const res = await fetch('http://localhost:5000/tasks', {
+        const res = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -59,12 +61,14 @@ const App = () => {
         });
 
         const data = await res.json();
+        console.log(task);
+        console.log("Data:", data);
         setTask([...tasks, data]);
     }
     
     // Delete Task
     const deleteTask = async (id) => {
-        await fetch(`http://localhost:5000/tasks/${id}`, {
+        await fetch(`${url}/${id}`, {
             method: 'DELETE'
         })
         
@@ -83,7 +87,7 @@ const App = () => {
             reminder: !taskToToggle.reminder
         }
         
-        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        const res = await fetch(`${url}/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json'
